@@ -272,3 +272,28 @@
 
 # Apache Zeppelin 연동
 - 자체적으로 서버를 가지고 있으면서 code입력시 visualize도 유용한 형태이다. 
+```scala
+//사용가능확인
+sc.version
+
+//데이터
+sqlContext
+val rdd = sc.makeRDD( 0 to 100 ).map( x => (x, 200-x))
+rdd.take(20)
+
+//정형화된 데이터를 다루기 위한 dataframe화 
+val df = rdd.toDF("index","value")
+df.registerTempTable("spark_study") //sparksql사용할 준비가 된것
+
+//SparkSql코드짜는 방법
+//예1.
+sql.Context.sql("select * from spark_study")
+//예2.
+%sql
+select * from spark_study //시각화 등도 한번에 같이 가능하다. 
+//예3.
+%sql
+select *
+from spark_study
+where value > 120
+```
